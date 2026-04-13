@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toast Coffeehouse Group — Period 3 Financial Report</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --charcoal: #1C1C1C;
+    --warm-gray: #8A8580;
+    --light-gray: #E8E4DF;
+    --accent-green: #2D6A4F;
+    --accent-green-light: #52B788;
+    --accent-red: #C0392B;
+    --accent-amber: #D4820A;
+    --card-bg: #FFFFFF;
+    --border: #E2DDD8;
+    --section-label: #9B9590;
+    --ink: #2C2825;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ─── HEADER ─── */
+  .report-header {
+    background: var(--charcoal);
+    color: white;
+    padding: 48px 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 60px solid rgba(255,255,255,0.04);
+  }
+  .report-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 120px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 40px solid rgba(255,255,255,0.03);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 12px;
+  }
+  .header-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .header-period {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .header-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 32px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
+  }
+  .header-meta-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+  .header-meta-item span {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* ─── LAYOUT ─── */
+  .report-body {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 60px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section {
+    margin-bottom: 56px;
+  }
+
+  /* ─── HERO METRICS ─── */
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .hero-metric {
+    background: var(--card-bg);
+    padding: 32px 28px;
+  }
+  .hero-metric-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    margin-bottom: 10px;
+  }
+  .hero-metric-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    color: var(--charcoal);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .hero-metric-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .hero-metric-change.up { color: var(--accent-green); }
+  .hero-metric-change.down { color: var(--accent-red); }
+  .hero-metric-desc {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--warm-gray);
+    line-height: 1.6;
+    border-top: 1px solid var(--light-gray);
+    padding-top: 12px;
+  }
+
+  /* ─── EXECUTIVE SUMMARY BULLETS ─── */
+  .exec-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .exec-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 22px;
+  }
+  .exec-card-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  .exec-card-icon.green { background: #E8F5EE; color: var(--accent-green); }
+  .exec-card-icon.amber { background: #FEF3E2; color: var(--accent-amber); }
+  .exec-card-icon.red { background: #FDECEA; color: var(--accent-red); }
+  .exec-card-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .exec-card-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+  .exec-card-change {
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .exec-card-change.up { color: var(--accent-green); }
+  .exec-card-change.down { color: var(--accent-red); }
+  .exec-card-desc {
+    font-size: 11.5px;
+    color: var(--warm-gray);
+    line-height: 1.55;
+  }
+
+  /* ─── KPI TABLE ─── */
+  .kpi-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .kpi-table thead tr {
+    background: var(--charcoal);
+    color: white;
+  }
+  .kpi-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .kpi-table thead th:nth-child(2),
+  .kpi-table thead th:nth-child(3),
+  .kpi-table thead th:nth-child(4) { text-align: right; }
+
+  .kpi-table tbody tr { border-bottom: 1px solid var(--light-gray); }
+  .kpi-table tbody tr:last-child { border-bottom: none; }
+  .kpi-table tbody tr.section-header { background: #F5F2EE; }
+  .kpi-table tbody tr.section-header td {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--section-label);
+    padding: 10px 16px;
+  }
+  .kpi-table tbody td {
+    padding: 11px 16px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .kpi-table tbody td:nth-child(2),
+  .kpi-table tbody td:nth-child(3) { text-align: right; }
+  .kpi-table tbody td:nth-child(4) { text-align: right; }
+
+  .kpi-result { font-weight: 500; }
+  .kpi-target { color: var(--warm-gray); font-size: 12px; }
+  .kpi-trend { font-size: 12px; }
+  .kpi-trend.up { color: var(--accent-green); }
+  .kpi-trend.down { color: var(--accent-red); }
+  .kpi-trend.neutral { color: var(--warm-gray); }
+
+  .kpi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .kpi-badge.pass { background: #E8F5EE; color: var(--accent-green); }
+  .kpi-badge.fail { background: #FDECEA; color: var(--accent-red); }
+  .kpi-badge.warn { background: #FEF3E2; color: var(--accent-amber); }
+  .kpi-badge.na { background: #F0EDEA; color: var(--warm-gray); }
+
+  /* ─── ALERTS ─── */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .alert-card {
+    border-radius: 4px;
+    padding: 18px 20px;
+    border-left: 3px solid;
+  }
+  .alert-card.red { background: #FFF5F5; border-color: var(--accent-red); }
+  .alert-card.amber { background: #FFFBF0; border-color: var(--accent-amber); }
+  .alert-card.green { background: #F0FAF5; border-color: var(--accent-green); }
+  .alert-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--charcoal);
+  }
+  .alert-card.red .alert-card-title { color: var(--accent-red); }
+  .alert-card.amber .alert-card-title { color: var(--accent-amber); }
+  .alert-card.green .alert-card-title { color: var(--accent-green); }
+  .alert-card-text { font-size: 12px; color: var(--warm-gray); line-height: 1.6; }
+
+  /* ─── CHARTS ─── */
+  .charts-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .chart-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    margin-bottom: 20px;
+  }
+  .chart-container { position: relative; height: 240px; }
+
+  /* ─── BREAKDOWN BARS ─── */
+  .breakdown-bar-list { display: flex; flex-direction: column; gap: 10px; }
+  .breakdown-bar-item {}
+  .breakdown-bar-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .breakdown-bar-name { font-size: 12px; color: var(--ink); }
+  .breakdown-bar-value { font-size: 12px; font-weight: 500; color: var(--charcoal); }
+  .breakdown-bar-track { height: 6px; background: var(--light-gray); border-radius: 3px; overflow: hidden; }
+  .breakdown-bar-fill { height: 100%; border-radius: 3px; }
+  .breakdown-bar-fill.blue { background: #2563EB; }
+  .breakdown-bar-fill.teal { background: #0891B2; }
+
+  /* ─── BREAKEVEN ─── */
+  .breakeven-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .breakeven-stat {
+    background: var(--card-bg);
+    padding: 20px 22px;
+  }
+  .breakeven-stat label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--section-label);
+    margin-bottom: 6px;
+  }
+  .breakeven-stat .val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--charcoal);
+  }
+  .breakeven-stat .sub { font-size: 11px; color: var(--warm-gray); margin-top: 3px; }
+
+  /* ─── CASH FLOW WATERFALL ─── */
+  .cashflow-rows { display: flex; flex-direction: column; gap: 0; }
+  .cashflow-row {
+    display: flex; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--light-gray);
+  }
+  .cashflow-row:last-child { border-bottom: none; }
+  .cashflow-label { width: 260px; font-size: 12px; color: var(--ink); flex-shrink: 0; }
+  .cashflow-label.sub { padding-left: 16px; color: var(--warm-gray); }
+  .cashflow-tag { width: 36px; font-size: 10px; color: var(--warm-gray); flex-shrink: 0; }
+  .cashflow-bar-track { flex: 1; height: 18px; position: relative; }
+  .cashflow-bar-fill {
+    height: 100%; border-radius: 2px; position: absolute;
+    display: flex; align-items: center; padding: 0 6px;
+    font-size: 10px; font-weight: 500; white-space: nowrap; color: white;
+  }
+  .cashflow-bar-fill.pos { background: var(--accent-green); left: 0; }
+  .cashflow-bar-fill.neg { background: var(--accent-red); right: 0; }
+  .cashflow-amount { width: 110px; text-align: right; font-size: 12px; font-weight: 500; flex-shrink: 0; padding-left: 12px; }
+  .cashflow-amount.pos { color: var(--accent-green); }
+  .cashflow-amount.neg { color: var(--accent-red); }
+  .cashflow-subtotal { background: var(--charcoal); color: white; padding: 10px 0 10px; margin: 4px 0; border-radius: 2px; }
+  .cashflow-subtotal .cashflow-label { color: white; font-weight: 600; padding-left: 12px; }
+  .cashflow-subtotal .cashflow-amount { color: white; font-weight: 600; }
+
+  /* ─── ENTITY TABLE ─── */
+  .entity-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    font-size: 12.5px;
+  }
+  .entity-table thead tr { background: var(--charcoal); color: white; }
+  .entity-table thead th {
+    padding: 11px 14px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+  .entity-table thead th:first-child { text-align: left; }
+  .entity-table tbody tr { border-bottom: 1px solid var(--light-gray); }
+  .entity-table tbody tr:last-child { border-bottom: none; }
+  .entity-table tbody tr.subtotal { background: #F5F2EE; font-weight: 600; }
+  .entity-table tbody tr.total-row { background: #EEE9E3; font-weight: 700; }
+  .entity-table tbody td {
+    padding: 9px 14px;
+    text-align: right;
+    color: var(--ink);
+  }
+  .entity-table tbody td:first-child { text-align: left; font-weight: 500; }
+  .neg-val { color: var(--accent-red); }
+
+  /* ─── FOOTER ─── */
+  .report-footer {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── NAV TABS ─── */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--charcoal); }
+  .tab-btn.active { color: var(--charcoal); border-bottom-color: var(--charcoal); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  @media print {
+    .tab-nav { display: none; }
+    .tab-panel { display: block !important; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="header-eyebrow">Consolidated Financial Report</div>
+  <div class="header-title">Toast Coffeehouse Group</div>
+  <div class="header-period">Period 3 &nbsp;·&nbsp; March 1 – April 4, 2026</div>
+  <div class="header-meta">
+    <div class="header-meta-item">
+      <label>Entities</label>
+      <span>7 Operating Locations</span>
+    </div>
+    <div class="header-meta-item">
+      <label>Comparison Period</label>
+      <span>P2 — February 2026</span>
+    </div>
+    <div class="header-meta-item">
+      <label>Prepared By</label>
+      <span>Climb Accounting Corporation</span>
+    </div>
+    <div class="header-meta-item">
+      <label>Data Source</label>
+      <span>QuickBooks — Fiscal Period Basis</span>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="report-body">
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('exec')">Executive Summary</button>
+    <button class="tab-btn" onclick="showTab('kpi')">KPI Results</button>
+    <button class="tab-btn" onclick="showTab('charts')">Breakdown Charts</button>
+    <button class="tab-btn" onclick="showTab('breakeven')">Breakeven</button>
+    <button class="tab-btn" onclick="showTab('cashflow')">Cash Flow</button>
+    <button class="tab-btn" onclick="showTab('entities')">By Location</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 1: EXECUTIVE SUMMARY
+  ══════════════════════════════════════════════ -->
+  <div id="tab-exec" class="tab-panel active">
+
+    <div class="section">
+      <div class="section-label">Key Performance Highlights — P3 vs P2</div>
+
+      <!-- HERO 3 -->
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <div class="hero-metric-label">Total Revenue</div>
+          <div class="hero-metric-value">$1.498M</div>
+          <div class="hero-metric-change up">▲ 24.8% from P2</div>
+          <div class="hero-metric-desc">Strong period-over-period revenue growth driven by increased food and beverage sales across all operating locations.</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-label">Gross Profit %</div>
+          <div class="hero-metric-value">75.0%</div>
+          <div class="hero-metric-change up">▲ 38.6pts from P2</div>
+          <div class="hero-metric-desc">Gross margin expanded significantly as labor costs (payroll) are now tracked below the gross profit line in this period's classification.</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-label">Net Income</div>
+          <div class="hero-metric-value">$576,629</div>
+          <div class="hero-metric-change up">▲ from ($16,300) P2</div>
+          <div class="hero-metric-desc">Consolidated net income swung decisively positive, reflecting strong operational improvement across the group.</div>
+        </div>
+      </div>
+
+      <!-- EXEC CARDS -->
+      <div class="exec-summary-grid">
+        <div class="exec-card">
+          <div class="exec-card-icon green">↑</div>
+          <div class="exec-card-title">Revenue</div>
+          <div class="exec-card-value">$1,498,012</div>
+          <div class="exec-card-change up">▲ 24.8% vs P2 ($1,200,036)</div>
+          <div class="exec-card-desc">All seven locations contributed positively. Kuddage V led at $350K, followed by Kuddage III at $279K and Toast Coffee Seven at $279K.</div>
+        </div>
+        <div class="exec-card">
+          <div class="exec-card-icon green">↑</div>
+          <div class="exec-card-title">Profitability</div>
+          <div class="exec-card-value">38.5% Net Margin</div>
+          <div class="exec-card-change up">▲ from (1.4%) in P2</div>
+          <div class="exec-card-desc">Net income of $576,629 represents a full recovery from P2's loss. Operating income of $642,314 reflects strong cost discipline.</div>
+        </div>
+        <div class="exec-card">
+          <div class="exec-card-icon amber">→</div>
+          <div class="exec-card-title">Gross Profit</div>
+          <div class="exec-card-value">$1,123,823</div>
+          <div class="exec-card-change up">▲ 157% vs P2 ($436,525)</div>
+          <div class="exec-card-desc">Gross profit expanded materially. Note: P3 COGS excludes restaurant labor (wages/taxes), which are now classified in operating expenses.</div>
+        </div>
+        <div class="exec-card">
+          <div class="exec-card-icon green">↑</div>
+          <div class="exec-card-title">Cash Position</div>
+          <div class="exec-card-value">$320,097</div>
+          <div class="exec-card-change up">▲ from $292,302 P2</div>
+          <div class="exec-card-desc">Group cash increased by ~$28K. Kuddage Inc. (K1) holds the largest cash balance at $125K. Kuddage VI remains in a negative cash position.</div>
+        </div>
+        <div class="exec-card">
+          <div class="exec-card-icon amber">!</div>
+          <div class="exec-card-title">Accounts Payable</div>
+          <div class="exec-card-value">$341,933</div>
+          <div class="exec-card-change down">▲ from $266,385 P2</div>
+          <div class="exec-card-desc">AP increased by $76K vs. P2. AP days remain short — ongoing review of vendor payment timing and terms is advisable to preserve working capital.</div>
+        </div>
+        <div class="exec-card">
+          <div class="exec-card-icon amber">!</div>
+          <div class="exec-card-title">Liquidity</div>
+          <div class="exec-card-value">Current Ratio: 0.29</div>
+          <div class="exec-card-change down">▼ Below 1.0 threshold</div>
+          <div class="exec-card-desc">Current liabilities of $2.18M significantly exceed current assets of $641K, driven largely by gift card liabilities and intercompany balances. Monitor closely.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="section">
+      <div class="section-label">Alerts — Items Requiring Attention</div>
+      <div class="alerts-grid">
+        <div class="alert-card red">
+          <div class="alert-card-title">⚠ Liquidity — Current &amp; Quick Ratios</div>
+          <div class="alert-card-text">Current ratio of 0.29:1 and quick ratio of 0.21:1 remain below safe thresholds. A significant portion of current liabilities represent gift card balances and intercompany items, but short-term cash coverage warrants ongoing monitoring.</div>
+        </div>
+        <div class="alert-card amber">
+          <div class="alert-card-title">⚠ Accounts Payable Days</div>
+          <div class="alert-card-text">AP days remain short across most locations (10–20 days). The group is paying vendors faster than optimal. Consider extending payment terms where possible to improve free cash flow and working capital position.</div>
+        </div>
+        <div class="alert-card amber">
+          <div class="alert-card-title">⚠ The Study by Toast — Operating Loss</div>
+          <div class="alert-card-text">The Study posted an operating loss of ($16,700) for P3, driven by $15,200 of uncategorized expenses at Kuddage Inc. Net income for The Study was ($15,727) after other expenses. Recommend investigating uncategorized items promptly.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-exec -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 2: KPI RESULTS
+  ══════════════════════════════════════════════ -->
+  <div id="tab-kpi" class="tab-panel">
+    <div class="section">
+      <div class="section-label">Consolidated KPI Results — P3 (Mar 1 – Apr 4, 2026) vs P2</div>
+
+      <table class="kpi-table">
+        <thead>
+          <tr>
+            <th style="width:40%">Metric</th>
+            <th>P3 Result</th>
+            <th>Target</th>
+            <th>vs P2 Trend</th>
+            <th style="text-align:center; width:80px">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="5">A &nbsp; Profitability</td></tr>
+          <tr>
+            <td>Total Revenue</td>
+            <td class="kpi-result">$1,498,012</td>
+            <td class="kpi-target">$1,200,000</td>
+            <td class="kpi-trend up">▲ 24.8%</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Gross Profit Margin</td>
+            <td class="kpi-result">75.0%</td>
+            <td class="kpi-target">35%</td>
+            <td class="kpi-trend up">▲ 38.6 pts</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Operating Profit Margin</td>
+            <td class="kpi-result">42.9%</td>
+            <td class="kpi-target">25%</td>
+            <td class="kpi-trend up">▲ from 3.0%</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Net Income Margin</td>
+            <td class="kpi-result">38.5%</td>
+            <td class="kpi-target">7%</td>
+            <td class="kpi-trend up">▲ from (1.4%)</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">B &nbsp; Activity</td></tr>
+          <tr>
+            <td>Accounts Receivable Days</td>
+            <td class="kpi-result">~3 days</td>
+            <td class="kpi-target">40 days</td>
+            <td class="kpi-trend up">▼ Improving</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Inventory Days (Food)</td>
+            <td class="kpi-result">~6 days</td>
+            <td class="kpi-target">14 days</td>
+            <td class="kpi-trend up">— Stable</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Accounts Payable Days</td>
+            <td class="kpi-result">~10–20 days</td>
+            <td class="kpi-target">30–45 days</td>
+            <td class="kpi-trend down">▼ Below target</td>
+            <td style="text-align:center"><span class="kpi-badge warn">⚠ Watch</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">C &nbsp; Efficiency</td></tr>
+          <tr>
+            <td>Return on Capital Employed</td>
+            <td class="kpi-result">N/A (neg equity)</td>
+            <td class="kpi-target">12.5%</td>
+            <td class="kpi-trend neutral">—</td>
+            <td style="text-align:center"><span class="kpi-badge na">N/A</span></td>
+          </tr>
+          <tr>
+            <td>Asset Turnover</td>
+            <td class="kpi-result">0.57× (period)</td>
+            <td class="kpi-target">5.0×</td>
+            <td class="kpi-trend up">▲ from 0.46×</td>
+            <td style="text-align:center"><span class="kpi-badge na">Annualize</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">D &nbsp; Asset Usage</td></tr>
+          <tr>
+            <td>Total Assets</td>
+            <td class="kpi-result">$2,642,439</td>
+            <td class="kpi-target">—</td>
+            <td class="kpi-trend up">▲ from $2,580,644</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Up</span></td>
+          </tr>
+          <tr>
+            <td>Fixed Assets (Net)</td>
+            <td class="kpi-result">$1,949,219</td>
+            <td class="kpi-target">—</td>
+            <td class="kpi-trend up">▲ Stable</td>
+            <td style="text-align:center"><span class="kpi-badge na">—</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">E &nbsp; Liquidity</td></tr>
+          <tr>
+            <td>Current Ratio</td>
+            <td class="kpi-result">0.29:1</td>
+            <td class="kpi-target">2.00:1</td>
+            <td class="kpi-trend up">▲ from 0.22:1</td>
+            <td style="text-align:center"><span class="kpi-badge fail">⚠ Alert</span></td>
+          </tr>
+          <tr>
+            <td>Quick Ratio</td>
+            <td class="kpi-result">0.21:1</td>
+            <td class="kpi-target">1.00:1</td>
+            <td class="kpi-trend up">▲ from 0.18:1</td>
+            <td style="text-align:center"><span class="kpi-badge fail">⚠ Alert</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">F &nbsp; Coverage &amp; Gearing</td></tr>
+          <tr>
+            <td>Total Debt (LT Liabilities)</td>
+            <td class="kpi-result">$1,686,614</td>
+            <td class="kpi-target">—</td>
+            <td class="kpi-trend down">▼ vs $1,726,943</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Down</span></td>
+          </tr>
+          <tr>
+            <td>Total Equity</td>
+            <td class="kpi-result">($1,221,480)</td>
+            <td class="kpi-target">Positive</td>
+            <td class="kpi-trend up">▲ from ($1,792,478)</td>
+            <td style="text-align:center"><span class="kpi-badge warn">⚠ Neg</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">G &nbsp; Cash Flow</td></tr>
+          <tr>
+            <td>Cash on Hand</td>
+            <td class="kpi-result">$320,097</td>
+            <td class="kpi-target">$100,000</td>
+            <td class="kpi-trend up">▲ from $292,302</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Accounts Receivable (deposits)</td>
+            <td class="kpi-result">$242,524</td>
+            <td class="kpi-target">—</td>
+            <td class="kpi-trend up">▲ from $217,350</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Up</span></td>
+          </tr>
+
+          <tr class="section-header"><td colspan="5">H &nbsp; Growth (P3 vs P2)</td></tr>
+          <tr>
+            <td>Revenue Growth</td>
+            <td class="kpi-result">+24.8%</td>
+            <td class="kpi-target">&gt;5%</td>
+            <td class="kpi-trend up">▲ Strong</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Gross Profit Growth</td>
+            <td class="kpi-result">+157.4%</td>
+            <td class="kpi-target">&gt;5%</td>
+            <td class="kpi-trend up">▲ Strong</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Net Income Growth</td>
+            <td class="kpi-result">+$592,929</td>
+            <td class="kpi-target">Positive</td>
+            <td class="kpi-trend up">▲ from ($16,300)</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+          <tr>
+            <td>Total Assets Change</td>
+            <td class="kpi-result">+$61,795</td>
+            <td class="kpi-target">Positive</td>
+            <td class="kpi-trend up">▲ 2.4%</td>
+            <td style="text-align:center"><span class="kpi-badge pass">✓ Pass</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- /tab-kpi -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 3: BREAKDOWN CHARTS
+  ══════════════════════════════════════════════ -->
+  <div id="tab-charts" class="tab-panel">
+    <div class="section">
+      <div class="section-label">Revenue &amp; Cost Breakdown by Location — P3</div>
+      <div class="charts-grid-2">
+
+        <div class="chart-card">
+          <div class="chart-title">Revenue by Location</div>
+          <div class="breakdown-bar-list">
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage V (Port Jeff)</span><span class="breakdown-bar-value">$350,319</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:100%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage III (Bay Shore)</span><span class="breakdown-bar-value">$278,764</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:79.6%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Toast Coffee Seven</span><span class="breakdown-bar-value">$278,800</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:79.6%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage II (Patchogue)</span><span class="breakdown-bar-value">$263,631</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:75.2%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage VI (Long Beach)</span><span class="breakdown-bar-value">$218,615</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:62.4%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">The Study by Toast</span><span class="breakdown-bar-value">$107,785</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:30.8%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Splendid Hospitality</span><span class="breakdown-bar-value">$99</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:0.1%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">COGS by Location</div>
+          <div class="breakdown-bar-list">
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage V (Port Jeff)</span><span class="breakdown-bar-value">$80,713</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:100%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage III (Bay Shore)</span><span class="breakdown-bar-value">$66,110</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:81.9%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Toast Coffee Seven</span><span class="breakdown-bar-value">$64,935</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:80.4%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage II (Patchogue)</span><span class="breakdown-bar-value">$63,779</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:79.0%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage VI (Long Beach)</span><span class="breakdown-bar-value">$50,399</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:62.4%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">The Study by Toast</span><span class="breakdown-bar-value">$42,238</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:52.3%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Splendid Hospitality</span><span class="breakdown-bar-value">$6,015</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:7.4%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Gross Margin % by Location</div>
+          <div class="breakdown-bar-list">
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Splendid Hospitality</span><span class="breakdown-bar-value" style="color:var(--accent-red)">-5,975%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="background:var(--accent-red);width:5%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage V (Port Jeff)</span><span class="breakdown-bar-value">76.9%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:76.9%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Toast Coffee Seven</span><span class="breakdown-bar-value">76.7%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:76.7%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage II (Patchogue)</span><span class="breakdown-bar-value">75.8%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:75.8%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage III (Bay Shore)</span><span class="breakdown-bar-value">76.3%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:76.3%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage VI (Long Beach)</span><span class="breakdown-bar-value">76.9%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:76.9%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">The Study by Toast</span><span class="breakdown-bar-value">60.8%</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:60.8%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Revenue Mix — P3 vs P2</div>
+          <div class="chart-container">
+            <canvas id="revMixChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Revenue Trend — P2 vs P3</div>
+      <div class="chart-card">
+        <div class="chart-title">Revenue by Location — Period Comparison</div>
+        <div class="chart-container" style="height:300px">
+          <canvas id="revenueCompareChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div><!-- /tab-charts -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 4: BREAKEVEN
+  ══════════════════════════════════════════════ -->
+  <div id="tab-breakeven" class="tab-panel">
+    <div class="section">
+      <div class="section-label">Breakeven Analysis — P3 Consolidated</div>
+
+      <div class="breakeven-stats">
+        <div class="breakeven-stat">
+          <label>Total Revenue</label>
+          <div class="val">$1,498,012</div>
+          <div class="sub">Period 3</div>
+        </div>
+        <div class="breakeven-stat">
+          <label>Total Costs</label>
+          <div class="val">$855,698</div>
+          <div class="sub">COGS + Expenses</div>
+        </div>
+        <div class="breakeven-stat">
+          <label>Breakeven Point</label>
+          <div class="val">~$962,000</div>
+          <div class="sub">Est. fixed ÷ contribution margin</div>
+        </div>
+        <div class="breakeven-stat">
+          <label>Margin of Safety</label>
+          <div class="val">$536,000</div>
+          <div class="sub">Revenue above breakeven</div>
+        </div>
+      </div>
+
+      <div class="charts-grid-2">
+        <div class="chart-card">
+          <div class="chart-title">Cost Structure — P3</div>
+          <div class="chart-container">
+            <canvas id="costStructureChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Top Expense Categories — P3</div>
+          <div class="breakdown-bar-list">
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Building Costs (Rent/Util/Carting)</span><span class="breakdown-bar-value">$186,098</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:100%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Admin &amp; General</span><span class="breakdown-bar-value">$83,386</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:44.8%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Marketing &amp; Promotions</span><span class="breakdown-bar-value">$68,537</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:36.8%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Restaurant Operating</span><span class="breakdown-bar-value">$109,949</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:59.1%"></div></div>
+            </div>
+            <div class="breakdown-bar-item">
+              <div class="breakdown-bar-header"><span class="breakdown-bar-name">Finance &amp; Non-Operating</span><span class="breakdown-bar-value">$33,133</span></div>
+              <div class="breakdown-bar-track"><div class="breakdown-bar-fill teal" style="width:17.8%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /tab-breakeven -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 5: CASH FLOW
+  ══════════════════════════════════════════════ -->
+  <div id="tab-cashflow" class="tab-panel">
+    <div class="section">
+      <div class="section-label">Cash Flow Analysis — P3 Consolidated</div>
+
+      <div class="breakeven-stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="breakeven-stat">
+          <label>Cash — Period Open (P2 Close)</label>
+          <div class="val">$292,302</div>
+        </div>
+        <div class="breakeven-stat">
+          <label>Net Cash Change</label>
+          <div class="val" style="color:var(--accent-green)">+$27,795</div>
+        </div>
+        <div class="breakeven-stat">
+          <label>Cash — Period Close</label>
+          <div class="val">$320,097</div>
+        </div>
+      </div>
+
+      <div class="chart-card" style="margin-bottom:24px">
+        <div class="chart-title">Cash Flow Waterfall — P3</div>
+        <div class="cashflow-rows">
+
+          <div class="cashflow-row">
+            <div class="cashflow-label">Revenue</div>
+            <div class="cashflow-tag">add</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill pos" style="width:100%"></div></div>
+            <div class="cashflow-amount pos">$1,498,012</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Cost of Goods Sold</div>
+            <div class="cashflow-tag">less</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill neg" style="width:25%"></div></div>
+            <div class="cashflow-amount neg">($374,189)</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label">Operating Expenses</div>
+            <div class="cashflow-tag">less</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill neg" style="width:32%"></div></div>
+            <div class="cashflow-amount neg">($481,509)</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label sub">Change in Accounts Payable</div>
+            <div class="cashflow-tag">add</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill pos" style="width:5%"></div></div>
+            <div class="cashflow-amount pos">+$75,548</div>
+          </div>
+          <div class="cashflow-row">
+            <div class="cashflow-label sub">Change in A/R (deposits)</div>
+            <div class="cashflow-tag">less</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill neg" style="width:1.7%"></div></div>
+            <div class="cashflow-amount neg">($25,174)</div>
+          </div>
+
+          <div class="cashflow-row cashflow-subtotal">
+            <div class="cashflow-label">Operating Cash Flow</div>
+            <div class="cashflow-tag"></div>
+            <div class="cashflow-bar-track"></div>
+            <div class="cashflow-amount">$692,688</div>
+          </div>
+
+          <div class="cashflow-row">
+            <div class="cashflow-label sub">Other Expenses (net)</div>
+            <div class="cashflow-tag">less</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill neg" style="width:4.4%"></div></div>
+            <div class="cashflow-amount neg">($65,684)</div>
+          </div>
+
+          <div class="cashflow-row cashflow-subtotal">
+            <div class="cashflow-label">Net Income</div>
+            <div class="cashflow-tag"></div>
+            <div class="cashflow-bar-track"></div>
+            <div class="cashflow-amount">$576,629</div>
+          </div>
+
+          <div class="cashflow-row">
+            <div class="cashflow-label sub">Net Cash Change (bank)</div>
+            <div class="cashflow-tag">actual</div>
+            <div class="cashflow-bar-track"><div class="cashflow-bar-fill pos" style="width:1.9%"></div></div>
+            <div class="cashflow-amount pos">+$27,795</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Cash by Location — End of P3</div>
+        <div class="breakdown-bar-list">
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage Inc. (K1 — Revival)</span><span class="breakdown-bar-value">$125,179</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:100%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage V (Port Jeff)</span><span class="breakdown-bar-value">$102,662</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:82%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage III (Bay Shore)</span><span class="breakdown-bar-value">$75,079</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:59.9%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Toast Coffee Seven</span><span class="breakdown-bar-value">$28,391</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:22.7%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage II (Patchogue)</span><span class="breakdown-bar-value">$7,531</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:6%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Splendid Hospitality</span><span class="breakdown-bar-value">$1,045</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill blue" style="width:0.8%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">Kuddage VI (Long Beach)</span><span class="breakdown-bar-value" style="color:var(--accent-red)">($14,392)</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="background:var(--accent-red);width:11.5%"></div></div>
+          </div>
+          <div class="breakdown-bar-item">
+            <div class="breakdown-bar-header"><span class="breakdown-bar-name">The Study by Toast</span><span class="breakdown-bar-value" style="color:var(--accent-red)">($5,397)</span></div>
+            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="background:var(--accent-red);width:4.3%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /tab-cashflow -->
+
+  <!-- ══════════════════════════════════════════════
+       TAB 6: BY ENTITY
+  ══════════════════════════════════════════════ -->
+  <div id="tab-entities" class="tab-panel">
+    <div class="section">
+      <div class="section-label">Financials by Location — P3 Income Statement</div>
+      <div style="overflow-x:auto">
+        <table class="entity-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;min-width:200px">Line Item</th>
+              <th>K2<br><span style="font-weight:300;text-transform:none;letter-spacing:0">Patchogue</span></th>
+              <th>K3<br><span style="font-weight:300;text-transform:none;letter-spacing:0">Bay Shore</span></th>
+              <th>K5<br><span style="font-weight:300;text-transform:none;letter-spacing:0">Port Jeff</span></th>
+              <th>K6<br><span style="font-weight:300;text-transform:none;letter-spacing:0">Long Beach</span></th>
+              <th>Splendid</th>
+              <th>Study</th>
+              <th>TC7</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="subtotal"><td>Total Revenue</td><td>$263,631</td><td>$278,764</td><td>$350,319</td><td>$218,615</td><td>$99</td><td>$107,785</td><td>$278,800</td><td>$1,498,012</td></tr>
+            <tr><td>Total COGS</td><td>$63,779</td><td>$66,110</td><td>$80,713</td><td>$50,399</td><td>$6,015</td><td>$42,238</td><td>$64,935</td><td>$374,189</td></tr>
+            <tr class="subtotal"><td>Gross Profit</td><td>$199,852</td><td>$212,654</td><td>$269,606</td><td>$168,215</td><td class="neg-val">($5,916)</td><td>$65,548</td><td>$213,865</td><td>$1,123,823</td></tr>
+            <tr><td style="color:var(--warm-gray);font-size:11px">Gross Margin %</td><td>75.8%</td><td>76.3%</td><td>76.9%</td><td>76.9%</td><td class="neg-val">—</td><td>60.8%</td><td>76.7%</td><td>75.0%</td></tr>
+            <tr><td>Total Expenses</td><td>$104,094</td><td>$95,488</td><td>$103,553</td><td>$88,023</td><td class="neg-val">($58,177)</td><td>$45,872</td><td>$85,955</td><td>$481,509</td></tr>
+            <tr class="subtotal"><td>Net Operating Income</td><td>$95,757</td><td>$117,165</td><td>$166,053</td><td>$80,192</td><td>$52,261</td><td>$19,675</td><td>$127,910</td><td>$642,314</td></tr>
+            <tr><td>Other Income / (Expenses)</td><td class="neg-val">($2,429)</td><td class="neg-val">($1,462)</td><td class="neg-val">($41,100)</td><td>$0</td><td class="neg-val">($33,802)</td><td class="neg-val">($50)</td><td class="neg-val">($3,253)</td><td class="neg-val">($65,685)</td></tr>
+            <tr class="total-row"><td>Net Income</td><td>$93,328</td><td>$115,703</td><td>$124,953</td><td>$80,192</td><td>$18,460</td><td class="neg-val">($15,728)</td><td>$124,657</td><td>$576,629</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Balance Sheet by Location — End of P3</div>
+      <div style="overflow-x:auto">
+        <table class="entity-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;min-width:200px">Line Item</th>
+              <th>K2</th>
+              <th>K3</th>
+              <th>K1 (Revival)</th>
+              <th>K5</th>
+              <th>K6</th>
+              <th>Splendid</th>
+              <th>Study</th>
+              <th>TC7</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Cash &amp; Bank</td><td>$7,531</td><td>$75,079</td><td>$125,179</td><td>$102,662</td><td class="neg-val">($14,392)</td><td>$1,045</td><td class="neg-val">($5,397)</td><td>$28,391</td><td>$320,097</td></tr>
+            <tr><td>Accounts Receivable</td><td>$54,576</td><td>$49,252</td><td>$0</td><td>$38,675</td><td>$41,155</td><td>$0</td><td>$15,338</td><td>$43,528</td><td>$242,524</td></tr>
+            <tr><td>Inventory (Food)</td><td>$13,425</td><td>$13,437</td><td>$0</td><td>$17,788</td><td>$14,415</td><td>$0</td><td>$5,654</td><td>$13,855</td><td>$78,573</td></tr>
+            <tr class="subtotal"><td>Total Current Assets</td><td>$75,531</td><td>$137,768</td><td>$125,179</td><td>$159,125</td><td>$41,178</td><td>$1,045</td><td>$15,595</td><td>$85,774</td><td>$641,195</td></tr>
+            <tr><td>Fixed Assets (Net)</td><td>$64,978</td><td>$35,599</td><td>$0</td><td>$0</td><td>$125,415</td><td>$0</td><td>$154,798</td><td>$1,568,429</td><td>$1,949,219</td></tr>
+            <tr class="subtotal"><td>Total Assets</td><td>$166,809</td><td>$173,367</td><td>$125,179</td><td>$184,850</td><td>$166,593</td><td>$1,045</td><td>$170,393</td><td>$1,654,203</td><td>$2,642,439</td></tr>
+            <tr><td>Accounts Payable</td><td>$63,558</td><td>$46,865</td><td>$0</td><td>$69,924</td><td>$45,843</td><td>$20,000</td><td>$46,584</td><td>$49,159</td><td>$341,933</td></tr>
+            <tr><td>Total Current Liabilities</td><td>$425,468</td><td>$739,196</td><td class="neg-val">($60,000)</td><td>$471,597</td><td>$237,422</td><td>$155,378</td><td>$203,273</td><td>$4,972</td><td>$2,177,306</td></tr>
+            <tr class="subtotal"><td>Total Liabilities</td><td>$225,384</td><td>$667,216</td><td>$90,020</td><td>$381,261</td><td>$1,484,109</td><td>$74,177</td><td>$350,796</td><td>$590,957</td><td>$3,863,919</td></tr>
+            <tr class="total-row"><td>Total Equity</td><td class="neg-val">($58,575)</td><td class="neg-val">($493,849)</td><td>$35,159</td><td class="neg-val">($196,411)</td><td class="neg-val">($1,317,516)</td><td class="neg-val">($73,132)</td><td class="neg-val">($180,402)</td><td>$1,063,246</td><td class="neg-val">($1,221,480)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div><!-- /tab-entities -->
+
+</div><!-- /report-body -->
+
+<div class="report-footer">
+  Toast Coffeehouse Group &nbsp;·&nbsp; Period 3 Financial Report (Mar 1 – Apr 4, 2026) &nbsp;·&nbsp; Prepared by Climb Accounting Corporation &nbsp;·&nbsp; Confidential &amp; Proprietary
+</div>
+
+<script>
+// ─── TAB SWITCHING ───
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── CHARTS ───
+const COLORS = {
+  blue: '#2563EB',
+  teal: '#0891B2',
+  green: '#2D6A4F',
+  amber: '#D4820A',
+  red: '#C0392B',
+  gray: '#8A8580',
+  lightBlue: '#93C5FD',
+  lightTeal: '#67E8F9',
+};
+
+const entities = ['K2 Patchogue','K3 Bay Shore','K5 Port Jeff','K6 Long Beach','Splendid','Study','TC7'];
+
+// Revenue Compare Chart
+new Chart(document.getElementById('revenueCompareChart'), {
+  type: 'bar',
+  data: {
+    labels: entities,
+    datasets: [
+      {
+        label: 'P2 Revenue',
+        data: [212650, 218696, 286276, 163211, 0, 98570, 220634],
+        backgroundColor: '#CBD5E1',
+        borderRadius: 3,
+      },
+      {
+        label: 'P3 Revenue',
+        data: [263631, 278764, 350319, 218615, 99, 107785, 278800],
+        backgroundColor: COLORS.blue,
+        borderRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { family: 'DM Sans', size: 11 } } },
+      tooltip: {
+        callbacks: { label: ctx => ' $' + ctx.raw.toLocaleString() }
+      }
+    },
+    scales: {
+      y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K', font: { family: 'DM Sans', size: 11 } }, grid: { color: '#E8E4DF' } },
+      x: { ticks: { font: { family: 'DM Sans', size: 10 } }, grid: { display: false } }
+    }
+  }
+});
+
+// Revenue Mix Donut
+new Chart(document.getElementById('revMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Gross Sales - Food','Gross Sales - Beverages','Service Charges','Other','Retail'],
+    datasets: [{
+      data: [1256374, 306622, 19104, 7266, 1100],
+      backgroundColor: [COLORS.blue, COLORS.teal, COLORS.green, COLORS.amber, '#CBD5E1'],
+      borderWidth: 2,
+      borderColor: '#FFFFFF',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'right', labels: { font: { family: 'DM Sans', size: 11 }, boxWidth: 12, padding: 12 } },
+      tooltip: { callbacks: { label: ctx => ' $' + ctx.raw.toLocaleString() + ' (' + (ctx.raw/1498012*100).toFixed(1) + '%)' } }
+    }
+  }
+});
+
+// Cost Structure
+new Chart(document.getElementById('costStructureChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Food Costs','Beverage Costs','Restaurant Labor (in COGS)','Restaurant Operating','Building Costs','Admin & General','Marketing','Finance & Other'],
+    datasets: [{
+      data: [279440, 72024, 23952, 109949, 186098, 83386, 68537, 33133],
+      backgroundColor: [COLORS.blue, COLORS.teal, COLORS.green, COLORS.amber, '#7C3AED', '#DB2777', '#059669', COLORS.gray],
+      borderWidth: 2,
+      borderColor: '#FFFFFF',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'right', labels: { font: { family: 'DM Sans', size: 10 }, boxWidth: 10, padding: 8 } },
+      tooltip: { callbacks: { label: ctx => ' $' + ctx.raw.toLocaleString() } }
+    }
+  }
+});
+</script>
+</body>
+</html>
